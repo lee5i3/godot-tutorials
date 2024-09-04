@@ -14,4 +14,5 @@ script = ExtResource("1_mrun6")
 shape = SubResource("CircleShape2D_0wa4x")
 
 [node name="Sprite2D" type="Sprite2D" parent="Player"]
+position = Vector2(600, 300)
 texture = ExtResource("1_2u4g3")
