@@ -1,0 +1,64 @@
+[gd_scene load_steps=7 format=3 uid="uid://dml4iclwtc704"]
+
+[ext_resource type="Script" path="res://player.gd" id="1_iynh1"]
+[ext_resource type="Texture2D" uid="uid://1fv4w3lrqufa" path="res://icon.svg" id="2_ufpaf"]
+
+[sub_resource type="Animation" id="Animation_uh3io"]
+length = 0.001
+step = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Player:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 0.0]
+}
+
+[sub_resource type="Animation" id="Animation_6xhkr"]
+resource_name = "walk"
+length = 0.75
+step = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Player:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25, 0.5, 0.75),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [0.0, -0.436332, 0.436332, 0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_dnw8t"]
+_data = {
+"RESET": SubResource("Animation_uh3io"),
+"walk": SubResource("Animation_6xhkr")
+}
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_gp2ut"]
+
+[node name="Main" type="Node2D"]
+
+[node name="Player" type="CharacterBody2D" parent="."]
+position = Vector2(600, 300)
+script = ExtResource("1_iynh1")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Player"]
+root_node = NodePath("../..")
+libraries = {
+"": SubResource("AnimationLibrary_dnw8t")
+}
+
+[node name="Sprite2D" type="Sprite2D" parent="Player"]
+texture = ExtResource("2_ufpaf")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+scale = Vector2(8.505, 8.505)
+shape = SubResource("CircleShape2D_gp2ut")
