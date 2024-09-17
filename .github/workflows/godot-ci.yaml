@@ -24,23 +24,18 @@ jobs:
       - name: Get List of Folders in Tutorials
         id: list_folders
         run: |
-          # Find the folders and store them in a space-separated list
-          TUTORIALS_FOLDERS=$(find ./tutorials -type d -not -path '*/\.*' -maxdepth 1 | xargs -n 1 basename)
-          
-          # Convert the space-separated list into a valid JSON array
+          TUTORIALS_FOLDERS=$(find ./tutorials/* -type d -not -path '*/\.*' | xargs -n 1 basename)
           TUTORIALS_FOLDERS_JSON=$(echo $TUTORIALS_FOLDERS | sed 's/ /","/g')
-          
-          # Wrap the folder names in quotes to make it a proper JSON array
           TUTORIALS_FOLDERS_JSON="\"${TUTORIALS_FOLDERS_JSON}\""
-          
-          # Add square brackets to make it a JSON array
           TUTORIALS_FOLDERS_JSON="[$TUTORIALS_FOLDERS_JSON]"
-          
-          # Store the JSON array in the GitHub environment variable
           echo "tutorials_folders=$TUTORIALS_FOLDERS_JSON" >> $GITHUB_ENV
 
       - name: Build staging folder
         run: |
-          for folder in ${{ steps.list_folders.outputs.tutorials_folders }}; do
+          TUTORIALS_FOLDERS=${{ steps.list_folders.outputs.tutorials_folders }}         
+          FOLDERS=$(echo $TUTORIALS_FOLDERS | sed 's/\[//g' | sed 's/\]//g' | sed 's/"//g')
+          IFS=',' read -r -a FOLDER_ARRAY <<< "$FOLDERS"
+
+          for folder in "${FOLDER_ARRAY[@]}"
             echo "Building $folder"            
           done
