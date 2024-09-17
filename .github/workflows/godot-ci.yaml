@@ -27,3 +27,9 @@ jobs:
           FOLDERS=$(find ./tutorials -type d -not -path '*/\.*' -maxdepth 1)
           echo "Folders found: $FOLDERS"
           echo "folders=$FOLDERS" >> $GITHUB_ENV
+
+      - name: Build staging folder
+        run: |
+          for folder in ${{ steps.list_folders.outputs.folders }}; do
+            echo "Building $folder"            
+          done
