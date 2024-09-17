@@ -24,9 +24,8 @@ jobs:
       - name: Get List of Folders in Tutorials
         id: list_folders
         run: |
-          FOLDERS=$(find ./tutorials -type d -not -path '*/\.*' -maxdepth 1)
-          echo "Folders found: $FOLDERS"
-          echo "folders=$FOLDERS" >> $GITHUB_ENV
+          tutorial_folders=$(find ./tutorials -type d -not -path '*/\.*' -maxdepth 1)
+          echo "folders=${tutorial_folders}" >> $GITHUB_ENV
 
       - name: Build staging folder
         run: |
