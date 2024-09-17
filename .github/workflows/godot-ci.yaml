@@ -1,0 +1,28 @@
+name: 'Publish to GitHub Pages'
+
+env:
+  GODOT_VERSION: 4.3
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    container:
+      image: barichello/godot-ci:4.3
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Get List of Folders in Tutorials
+        id: list_folders
+        run: |
+          FOLDERS=$(find ./tutorials -type d -not -path '*/\.*' -maxdepth 1)
+          echo "Folders found: $FOLDERS"
+          echo "folders=$FOLDERS" >> $GITHUB_ENV
